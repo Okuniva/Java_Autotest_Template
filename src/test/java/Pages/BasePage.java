@@ -27,7 +27,7 @@ public abstract class BasePage {
         return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    protected void OpenNewTab(String url) {
+    protected void openNewTab(String url) {
         String a = "window.open('" + url + "','_blank');";
         ((JavascriptExecutor) driver).executeScript(a);
 
@@ -37,21 +37,21 @@ public abstract class BasePage {
         driver.switchTo().window(tab_handles.toArray()[new_tab_index].toString());
     }
 
-    protected void WaitToHide(By element) {
+    protected void waitToHide(By element) {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(element));
     }
 
-    protected void Tap(By element) {
+    protected void tap(By element) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         jse.executeScript("arguments[0].click()", Wait(element));
     }
 
-    protected void Tap(WebElement element) {
+    protected void tap(WebElement element) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         jse.executeScript("arguments[0].click()", element);
     }
 
-    protected void ActionTap(WebElement element) {
+    protected void actionTap(WebElement element) {
         Actions builder = new Actions(driver);
         builder.moveToElement(element)
                 .click(element);
@@ -59,33 +59,33 @@ public abstract class BasePage {
         mouseoverAndClick.perform();
     }
 
-    protected void Enter(By element, String text) {
-        Tap(element);
+    protected void enter(By element, String text) {
+        tap(element);
         driver.findElement(element).sendKeys(text);
     }
 
-    protected void JsEnter(By element, String text) {
-        Tap(element);
+    protected void jsEnter(By element, String text) {
+        tap(element);
         WebElement activeElement = driver.switchTo().activeElement();
         activeElement.sendKeys(Keys.TAB);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         WebElement el = driver.findElement(element);
         js.executeScript("arguments[0].value = arguments[1];", el, text);
         SleepExtension.sleep(500);
-        Tap(element);
+        tap(element);
     }
 
-    protected void Clear(By element) {
-        Tap(element);
+    protected void clear(By element) {
+        tap(element);
         driver.findElement(element).clear();
     }
 
-    protected void SelectClearAndEnter(By element, String text) {
-        Tap(element);
+    protected void selectClearAndEnter(By element, String text) {
+        tap(element);
         driver.findElement(element).sendKeys(Keys.chord(Keys.CONTROL, "a"), text);
     }
 
-    protected void UploadFile(String fileName) {
+    protected void uploadFile(String fileName) {
         SleepExtension.sleep(2000);
         WebElement input = driver.findElement(By.cssSelector("input[type='file']"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].style.display = 'block';", input);
@@ -94,13 +94,13 @@ public abstract class BasePage {
         input.sendKeys(projectPath + "/recourse/" + fileName);
     }
 
-    protected void ScrollDown() {
+    protected void scrollDown() {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         jse.executeScript("window.scrollBy(1850,850)", "");
         SleepExtension.sleep(2000);
     }
 
-    protected void ScrollDown(WebElement element) {
+    protected void scrollDown(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
         SleepExtension.sleep(2000);
     }
