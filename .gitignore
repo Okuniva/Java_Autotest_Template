@@ -1,6 +1,7 @@
 .idea
 .allure
 target
+*.log
 *.iml
 *.DS_Store
 test_artefacts
