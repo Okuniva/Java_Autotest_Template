@@ -18,12 +18,12 @@ public abstract class BasePage {
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, 120);
+        wait = new WebDriverWait(driver, 15);
         ts = new TakeScreenExtension();
         Log.info("(Page loaded) Object of Page " + this.getClass().getSimpleName() + " created");
     }
 
-    protected WebElement Wait(By element) {
+    protected WebElement wait_clickkable(By element) {
         return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
@@ -43,7 +43,7 @@ public abstract class BasePage {
 
     protected void tap(By element) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
-        jse.executeScript("arguments[0].click()", Wait(element));
+        jse.executeScript("arguments[0].click()", wait_clickkable(element));
     }
 
     protected void tap(WebElement element) {

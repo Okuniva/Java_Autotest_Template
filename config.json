@@ -1,0 +1,9 @@
+{
+  "browserKey": "chrome",
+  "browserVersion": "83",
+  "selenoidServerUrl": "http://localhost:4444/wd/hub",
+  "siteUrl": "",
+  "environment": "prod",
+  "enableProxy": false,
+  "enableVideoRecording": false
+}

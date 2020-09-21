@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public abstract class BaseTestFixture {
@@ -85,6 +86,12 @@ public abstract class BaseTestFixture {
                     options.addArguments("--ignore-ssl-errors=yes");
                     options.addArguments("--ignore-certificate-errors");
                 }
+
+                // disable chrome save password
+                Map<String, Object> prefs = new HashMap<>();
+                prefs.put("credentials_enable_service", false);
+                prefs.put("profile.password_manager_enabled", false);
+                options.setExperimentalOption("prefs", prefs);
 
                 capabilities.setCapability(ChromeOptions.CAPABILITY, options);
                 break;
