@@ -9,6 +9,7 @@ import io.qameta.allure.selenide.LogType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
 
 import java.util.logging.Level;
 
@@ -35,6 +36,8 @@ public class BaseTestFixture {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .enableLogs(LogType.BROWSER, Level.ALL)
                 .enableLogs(LogType.PERFORMANCE, Level.ALL));
+
+        Log.debug("Video name:" + getSessionId() + ".mp4");
 
         open(Configuration.baseUrl);
     }
