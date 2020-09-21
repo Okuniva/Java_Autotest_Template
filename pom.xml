@@ -9,7 +9,17 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <!--config-->
+        <video.enabled>true</video.enabled>
+        <selenoid.url>http://0.0.0.0:4444/wd/hub</selenoid.url>
+        <base.url>url</base.url>
+
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <java.version>1.8</java.version>
+
         <!-- maven start -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
@@ -18,6 +28,11 @@
         <!-- JUnit start -->
         <junit.jupiter.version>5.4.2</junit.jupiter.version>
         <!-- JUnit end -->
+
+        <!-- Allure start -->
+        <aspectj.version>1.9.1</aspectj.version>
+        <allure.version>2.13.5</allure.version>
+        <!-- Allure end -->
     </properties>
 
     <dependencies>
@@ -42,34 +57,22 @@
         </dependency>
         <!-- JUnit end -->
 
-        <!-- selenium start -->
+        <!-- selenide start -->
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-api</artifactId>
-            <version>3.141.59</version>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>5.14.2</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-support</artifactId>
-            <version>3.141.59</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-chrome-driver</artifactId>
-            <version>3.141.59</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- selenium end -->
+        <!-- selenide end -->
 
-        <!-- TakeScreenshot start -->
+        <!-- Allure start -->
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-selenide</artifactId>
+            <version>${allure.version}</version>
         </dependency>
-        <!-- TakeScreenshot end -->
+        <!-- Allure end -->
 
         <!-- Allure start -->
         <dependency>
@@ -80,14 +83,6 @@
         </dependency>
         <!-- Allure end -->
 
-        <!-- Http / Json start-->
-        <dependency>
-            <groupId>com.mashape.unirest</groupId>
-            <artifactId>unirest-java</artifactId>
-            <version>1.4.9</version>
-        </dependency>
-        <!-- Http / Json end -->
-
         <!-- log4j start -->
         <dependency>
             <groupId>log4j</groupId>
@@ -96,35 +91,7 @@
         </dependency>
         <!-- log4j end -->
 
-        <!-- Proxy  start-->
-        <dependency>
-            <groupId>com.browserup</groupId>
-            <artifactId>browserup-proxy-core</artifactId>
-            <version>2.0.1</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- Proxy  end -->
-
-        <!-- RandomStringUtils start-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.8.1</version>
-        </dependency>
-        <!-- RandomStringUtils end-->
     </dependencies>
-
-
-    <!-- Test category start-->
-    <profiles>
-        <profile>
-            <id>smoke</id>
-            <properties>
-                <groups>smoke</groups>
-            </properties>
-        </profile>
-    </profiles>
-    <!-- Test category end-->
 
     <build>
         <plugins>
@@ -138,19 +105,24 @@
                 <!-- AspectJ is needed to process some annotation like @Attachment etc.-->
                 <configuration>
                     <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.4/aspectjweaver-1.9.4.jar"
+                        -Dfile.encoding=UTF-8
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
-                        <allure.link.custom.pattern>https://github.com/vinogradoff/allure-maven-junit5-example/{}
-                        </allure.link.custom.pattern>
+                        <video.enabled>${video.enabled}</video.enabled>
+                        <selenoid.url>${selenoid.url}</selenoid.url>
+                        <base.url>${base.url}</base.url>
                     </systemPropertyVariables>
+
+                    <useSystemClassLoader>false</useSystemClassLoader><!-- circleci workaround!!! -->
                 </configuration>
+
                 <dependencies>
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjweaver</artifactId>
-                        <version>1.9.4</version>
+                        <version>${aspectj.version}</version>
                     </dependency>
                 </dependencies>
                 <!-- Allure end -->
@@ -164,15 +136,8 @@
                 <version>2.10.0</version>
                 <!-- If you don't define report version the plugin will work, but may use the older one.-->
                 <configuration>
-                    <reportVersion>2.12.1</reportVersion>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <reportVersion>${allure.version}</reportVersion>
+                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
                 </configuration>
             </plugin>
             <!-- Allure end -->

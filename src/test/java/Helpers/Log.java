@@ -30,6 +30,7 @@ public class Log {
     }
 
     public static void debug(String message) {
+        System.out.println(message);
         Log.debug(message);
     }
 }
