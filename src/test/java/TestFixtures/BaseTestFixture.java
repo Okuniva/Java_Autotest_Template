@@ -37,9 +37,10 @@ public class BaseTestFixture {
                 .enableLogs(LogType.BROWSER, Level.ALL)
                 .enableLogs(LogType.PERFORMANCE, Level.ALL));
 
+        open(Configuration.baseUrl);
+
         Log.debug("Video name:" + getSessionId() + ".mp4");
 
-        open(Configuration.baseUrl);
     }
 
     public static String getSessionId() {
